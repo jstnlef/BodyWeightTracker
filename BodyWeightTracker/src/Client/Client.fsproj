@@ -7,6 +7,7 @@
     <ItemGroup>
         <None Include="index.html" />
         <None Include="paket.references" />
+        <Compile Include="Nivo.fs" />
         <Compile Include="StatusBox.fs" />
         <Compile Include="Navbar.fs" />
         <Compile Include="Index.fs" />
