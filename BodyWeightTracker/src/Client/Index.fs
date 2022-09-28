@@ -52,7 +52,9 @@ let init () : Model * Cmd<Msg> =
 
     let model =
         { weights = weights
-          user = { height = 69.0<inch>; age = 35<year> } }
+          user =
+            { height = 69.0<inch>
+              birthday = DateOnly(1987, 10, 3) } }
 
     //    let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
 
@@ -114,6 +116,22 @@ let view (model: Model) (dispatch: Msg -> unit) =
                     model.weights
                     |> Array.tryHead
                     |> Option.defaultValue DataPoint.empty
+
+                let today = DateOnly.FromDateTime(DateTime.UtcNow.Date)
+                let birthday = model.user.birthday
+                let calcYears = today.Year - birthday.Year
+
+                let age =
+                    if today.Month < birthday.Month
+                       || ((today.Month = birthday.Month)
+                           && (today.Day < birthday.Day)) then
+                        calcYears - 1
+                    else
+                        calcYears
+
+                Bulma.column [
+                    StatusBox.statusBox { text = $"{age}"; subtext = "Age" }
+                ]
 
                 Bulma.column [
                     StatusBox.statusBox

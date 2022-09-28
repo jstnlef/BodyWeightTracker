@@ -11,7 +11,9 @@ type year
 [<Measure>]
 type lbs
 
-type User = { height: float<inch>; age: int<year> }
+type User =
+    { height: float<inch>
+      birthday: DateOnly }
 
 type DataPoint =
     { date: DateTime
