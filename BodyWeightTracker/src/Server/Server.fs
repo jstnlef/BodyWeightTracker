@@ -7,21 +7,21 @@ open Saturn
 open Shared
 
 let webApp =
-    Remoting.createApi ()
-    |> Remoting.withRouteBuilder Route.builder
-    |> Remoting.fromValue Api.weightsApi
-    |> Remoting.buildHttpHandler
+  Remoting.createApi ()
+  |> Remoting.withRouteBuilder Route.builder
+  |> Remoting.fromValue Api.weightsApi
+  |> Remoting.buildHttpHandler
 
 let app =
-    application {
-        url "http://*:8085"
-        use_router webApp
-        memory_cache
-        use_static "public"
-        use_gzip
-    }
+  application {
+    url "http://*:8085"
+    use_router webApp
+    memory_cache
+    use_static "public"
+    use_gzip
+  }
 
 [<EntryPoint>]
 let main _ =
-    run app
-    0
+  run app
+  0

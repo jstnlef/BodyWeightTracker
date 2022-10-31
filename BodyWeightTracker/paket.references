@@ -2,3 +2,4 @@ Fake.Core.Target
 Fake.IO.FileSystem
 Farmer
 Dapper.FSharp
+Npgsql
