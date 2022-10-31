@@ -23,7 +23,10 @@ let todosApi =
 let init () : Model * Cmd<Msg> =
     let weights =
         [| { date = DateTime.Now
-             weight = 214.2<lbs>
+             weight = 210.4<lbs>
+             bodyFatPercent = Some 28.0 }
+           { date = DateTime.Now
+             weight = 213.6<lbs>
              bodyFatPercent = Some 28.7 }
            { date = DateTime.Now - TimeSpan.FromDays(1)
              weight = 222.4<lbs>
@@ -157,11 +160,11 @@ let view (model: Model) (dispatch: Msg -> unit) =
 
                 Bulma.column [
                     let idealLower =
-                        estimateIdealWeight weight 10.0
+                        estimateIdealWeight weight 8.0
                         |> Option.defaultValue 0.0<lbs>
 
                     let idealHigher =
-                        estimateIdealWeight weight 15.0
+                        estimateIdealWeight weight 19.0
                         |> Option.defaultValue 0.0<lbs>
 
                     StatusBox.statusBox

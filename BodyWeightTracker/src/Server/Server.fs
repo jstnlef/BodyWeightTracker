@@ -6,18 +6,10 @@ open Saturn
 
 open Shared
 
-module Storage =
-    let todos = ResizeArray()
-
-    let addTodo (data: DataPoint) = Ok()
-
-let weightsApi =
-    { getWeights = fun () -> async { return Storage.todos |> List.ofSeq } }
-
 let webApp =
     Remoting.createApi ()
     |> Remoting.withRouteBuilder Route.builder
-    |> Remoting.fromValue weightsApi
+    |> Remoting.fromValue Api.weightsApi
     |> Remoting.buildHttpHandler
 
 let app =

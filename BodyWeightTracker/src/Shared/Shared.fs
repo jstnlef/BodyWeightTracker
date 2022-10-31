@@ -22,7 +22,7 @@ type DataPoint =
 
 module DataPoint =
     let empty =
-        { date = DateTime.Now
+        { date = DateTime.UtcNow
           weight = 0.0<lbs>
           bodyFatPercent = None }
 
@@ -30,4 +30,4 @@ module Route =
     let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"
 
 type IWeightsApi =
-    { getWeights: unit -> Async<DataPoint list> }
+    { getWeights: string -> DataPoint list Async }
