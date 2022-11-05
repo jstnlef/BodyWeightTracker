@@ -7,11 +7,14 @@ open System
 
 open Shared
 
-Dapper.FSharp.OptionTypes.register ()
+let init = Dapper.FSharp.OptionTypes.register ()
 
-let username = Environment.GetEnvironmentVariable("POSTGRES_USER")
-let password = Environment.GetEnvironmentVariable("POSTGRES_PASSWORD")
-let conn = new NpgsqlConnection("")
+let connection =
+  // TODO: Maybe this stuff can get replaced by asp.net's configuration classes.
+  let host = Config.get "POSTGRES_HOST"
+  let username = Config.get "POSTGRES_USER"
+  let password = Config.get "POSTGRES_PASSWORD"
+  new NpgsqlConnection($"Host={host};Username={username};Password={password}")
 
 module Data =
   let dataTable = table<DataPoint>

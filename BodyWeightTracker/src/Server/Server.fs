@@ -6,6 +6,8 @@ open Saturn
 
 open Shared
 
+Storage.init
+
 let webApp =
   Remoting.createApi ()
   |> Remoting.withRouteBuilder Route.builder
