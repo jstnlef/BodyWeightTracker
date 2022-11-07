@@ -23,8 +23,8 @@ let todosApi =
 let init () : Model * Cmd<Msg> =
   let weights =
     [| { date = DateTime.Now
-         weight = 208.8<lbs>
-         bodyFatPercent = Some 27.6 } |]
+         weight = 210.8<lbs>
+         bodyFatPercent = Some 27.9 } |]
 
   let model =
     { weights = weights
@@ -73,16 +73,6 @@ let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
 //        ]
 //    ]
 
-let calculateBMI (height: float<inch>) (weight: float<lbs>) = 703.0 * (weight / (height * height))
-
-let estimateIdealWeight (data: DataPoint) (idealBodyFatPercent: float) : float<lbs> option =
-  data.bodyFatPercent
-  |> Option.map (fun bodyFatPercent ->
-    let currentBodyFat = bodyFatPercent / 100.0
-    let baseWeight = data.weight * (1.0 - currentBodyFat)
-    let idealBodyFat = idealBodyFatPercent / 100.0
-    baseWeight / (1.0 - idealBodyFat))
-
 let view (model: Model) (dispatch: Msg -> unit) =
   Bulma.container [
     Navbar.navbar
@@ -93,17 +83,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
           |> Array.tryHead
           |> Option.defaultValue DataPoint.empty
 
-        let today = DateOnly.FromDateTime(DateTime.UtcNow.Date)
-        let birthday = model.user.birthday
-        let calcYears = today.Year - birthday.Year
-
-        let age =
-          if today.Month < birthday.Month
-             || ((today.Month = birthday.Month)
-                 && (today.Day < birthday.Day)) then
-            calcYears - 1
-          else
-            calcYears
+        let age = model.user |> User.ageToday
 
         Bulma.column [
           StatusBox.statusBox { text = $"{age}"; subtext = "Age" }
@@ -116,7 +96,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
         ]
 
         Bulma.column [
-          let bmi = calculateBMI model.user.height weight.weight
+          let bmi = DataPoint.calculateBMI model.user.height weight
 
           StatusBox.statusBox
             { text = $"%0.1f{bmi}"
@@ -133,16 +113,18 @@ let view (model: Model) (dispatch: Msg -> unit) =
 
         Bulma.column [
           let idealLower =
-            estimateIdealWeight weight 8.0
+            weight
+            |> DataPoint.estimateIdealWeight 8.0
             |> Option.defaultValue 0.0<lbs>
 
           let idealHigher =
-            estimateIdealWeight weight 19.0
+            weight
+            |> DataPoint.estimateIdealWeight 19.0
             |> Option.defaultValue 0.0<lbs>
 
           StatusBox.statusBox
             { text = $"%0.1f{idealLower}-%0.1f{idealHigher}"
-              subtext = "Ideal weight range by estimated Body Fat" }
+              subtext = "Ideal weight range by estimated Body Fat (8% - 19%)" }
         ]
       ]
     ]
