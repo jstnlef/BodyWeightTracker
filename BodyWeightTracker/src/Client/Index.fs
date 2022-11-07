@@ -29,7 +29,8 @@ let init () : Model * Cmd<Msg> =
   let model =
     { weights = weights
       user =
-        { height = 69.0<inch>
+        { sex = Male
+          height = 69.0<inch>
           birthday = DateOnly(1987, 10, 3) } }
 
   //    let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos

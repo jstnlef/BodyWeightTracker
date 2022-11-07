@@ -11,8 +11,13 @@ type year
 [<Measure>]
 type lbs
 
+type Sex =
+  | Male
+  | Female
+
 type User =
-  { height: float<inch>
+  { sex: Sex
+    height: float<inch>
     birthday: DateOnly }
 
 module User =
@@ -46,7 +51,10 @@ module DataPoint =
   let estimateBodyFatFromBMI user datapoint =
     let bmi = calculateBMI user.height datapoint
     let age = User.ageToday user
-    1.20 * (float) bmi + 0.23 * (float) age - 16.2
+
+    match user.sex with
+    | Male -> 1.20 * (float) bmi + 0.23 * (float) age - 16.2
+    | Female -> 1.20 * (float) bmi + 0.23 * (float) age - 5.4
 
   let bodyFatPercentOrEstimate (user: User) (data: DataPoint) =
     data.bodyFatPercent
