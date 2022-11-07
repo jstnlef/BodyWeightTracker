@@ -43,14 +43,21 @@ module DataPoint =
   let calculateBMI (height: float<inch>) (datapoint: DataPoint) =
     703.0 * (datapoint.weight / (height * height))
 
-  let estimateIdealWeight (idealBodyFatPercent: float) (data: DataPoint) : float<lbs> option =
-    data.bodyFatPercent
-    |> Option.map (fun bodyFatPercent ->
-      let currentBodyFat = bodyFatPercent / 100.0
-      let baseWeight = data.weight * (1.0 - currentBodyFat)
-      let idealBodyFat = idealBodyFatPercent / 100.0
-      baseWeight / (1.0 - idealBodyFat))
+  let estimateBodyFatFromBMI user datapoint =
+    let bmi = calculateBMI user.height datapoint
+    let age = User.ageToday user
+    1.20 * (float) bmi + 0.23 * (float) age - 16.2
 
+  let bodyFatPercentOrEstimate (user: User) (data: DataPoint) =
+    data.bodyFatPercent
+    |> Option.defaultValue (estimateBodyFatFromBMI user data)
+
+  let estimateIdealWeight (user: User) (idealBodyFatPercent: float) (data: DataPoint) : float<lbs> =
+    let bodyFatPercent = bodyFatPercentOrEstimate user data
+    let currentBodyFat = bodyFatPercent / 100.0
+    let baseWeight = data.weight * (1.0 - currentBodyFat)
+    let idealBodyFat = idealBodyFatPercent / 100.0
+    baseWeight / (1.0 - idealBodyFat)
 
 module Route =
   let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"

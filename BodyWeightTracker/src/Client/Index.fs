@@ -104,23 +104,21 @@ let view (model: Model) (dispatch: Msg -> unit) =
         ]
 
         Bulma.column [
-          let bodyFat = weight.bodyFatPercent |> Option.defaultValue 0.0
+          let bodyFat = DataPoint.bodyFatPercentOrEstimate model.user weight
 
           StatusBox.statusBox
-            { text = $"{bodyFat}"
+            { text = $"%0.1f{bodyFat}"
               subtext = "Most recent Body Fat Percentage" }
         ]
 
         Bulma.column [
           let idealLower =
             weight
-            |> DataPoint.estimateIdealWeight 8.0
-            |> Option.defaultValue 0.0<lbs>
+            |> DataPoint.estimateIdealWeight model.user 8.0
 
           let idealHigher =
             weight
-            |> DataPoint.estimateIdealWeight 19.0
-            |> Option.defaultValue 0.0<lbs>
+            |> DataPoint.estimateIdealWeight model.user 19.0
 
           StatusBox.statusBox
             { text = $"%0.1f{idealLower}-%0.1f{idealHigher}"
