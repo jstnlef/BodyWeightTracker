@@ -84,12 +84,6 @@ let view (model: Model) (dispatch: Msg -> unit) =
           |> Array.tryHead
           |> Option.defaultValue DataPoint.empty
 
-        let age = model.user |> User.ageToday
-
-        Bulma.column [
-          StatusBox.statusBox { text = $"{age}"; subtext = "Age" }
-        ]
-
         Bulma.column [
           StatusBox.statusBox
             { text = $"{weight.weight}lbs"
@@ -110,6 +104,23 @@ let view (model: Model) (dispatch: Msg -> unit) =
           StatusBox.statusBox
             { text = $"%0.1f{bodyFat}"
               subtext = "Most recent Body Fat Percentage" }
+        ]
+
+        Bulma.column [
+          let leanMass = DataPoint.calculateLeanMass model.user weight
+
+          StatusBox.statusBox
+            { text = $"%0.1f{leanMass}"
+              subtext = "Most recent Lean Mass" }
+        ]
+
+        Bulma.column [
+          let leanMass = DataPoint.calculateLeanMass model.user weight
+          let fatMass = weight.weight - leanMass
+
+          StatusBox.statusBox
+            { text = $"%0.1f{fatMass}"
+              subtext = "Most recent Fat Mass" }
         ]
 
         Bulma.column [
