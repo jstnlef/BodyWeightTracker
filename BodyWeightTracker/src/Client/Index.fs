@@ -9,9 +9,7 @@ open Feliz
 open Feliz.Bulma
 open Feliz.Recharts
 
-type Model =
-  { weights: DataPoint array
-    user: User }
+type Model = { data: DataPoint array; user: User }
 
 type Msg = AddWeightMeasurement of DataPoint
 
@@ -22,12 +20,18 @@ let todosApi =
 
 let init () : Model * Cmd<Msg> =
   let weights =
-    [| { date = DateTime.Now
+    [| { date = DateTime.UtcNow.AddDays(-2)
          weight = 210.8<lbs>
-         bodyFatPercent = Some 27.9 } |]
+         bodyFatPercent = Some 27.9 }
+       { date = DateTime.UtcNow.AddDays(-1)
+         weight = 210.2<lbs>
+         bodyFatPercent = Some 27.9 }
+       { date = DateTime.UtcNow
+         weight = 209.2<lbs>
+         bodyFatPercent = Some 27.7 } |]
 
   let model =
-    { weights = weights
+    { data = weights
       user =
         { sex = Male
           height = 69.0<inch>
@@ -80,7 +84,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
     Bulma.container [
       Bulma.columns [
         let weight =
-          model.weights
+          model.data
           |> Array.tryHead
           |> Option.defaultValue DataPoint.empty
 
@@ -139,23 +143,18 @@ let view (model: Model) (dispatch: Msg -> unit) =
       ]
     ]
     Bulma.container [
-    //            Recharts.lineChart [
-//                lineChart.width 500
-//                lineChart.height 300
-//                lineChart.data model.weights
-//                lineChart.margin(top=5, right=30)
-//                lineChart.children [
-//                    Recharts.cartesianGrid [ cartesianGrid.strokeDasharray(3, 3) ]
-//                    Recharts.xAxis [ xAxis.dataKey (fun weight -> weight.date.ToString()) ]
-//                    Recharts.yAxis [ ]
-//                    Recharts.tooltip [ ]
-//                    Recharts.legend [ ]
-//                    Recharts.line [
-//                        line.monotone
-//                        line.dataKey (fun weight -> float weight.weight)
-//                        line.stroke "#8884d8"
-//                    ]
-//                ]
-//            ]
+      Recharts.responsiveContainer [
+        responsiveContainer.width (length.percent 100)
+        responsiveContainer.height 300
+        responsiveContainer.chart (Charts.WeightChart.weightChart model.data)
+      ]
+    ]
+
+    Bulma.container [
+      Recharts.responsiveContainer [
+        responsiveContainer.width (length.percent 100)
+        responsiveContainer.height 300
+        responsiveContainer.chart (Charts.BmiChart.bmiChart model.user model.data)
+      ]
     ]
   ]
