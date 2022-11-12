@@ -3,6 +3,7 @@ framework: net6.0
 storage: none
 
 nuget Dapper.FSharp
+nuget Fsharp.Core ~> 6
 nuget Fable.Remoting.Giraffe
 nuget Npgsql
 nuget Saturn
