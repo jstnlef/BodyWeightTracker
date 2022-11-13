@@ -1,42 +1,72 @@
 module Charts.WeightChart
 
+open System
 open Feliz
 open Feliz.Plotly
 open Shared
 
-let weightChart (data: DataPoint array) =
-  Plotly.plot [ plot.traces [ traces.scatter [ scatter.x [ 1; 2; 3; 4 ]
-                                               scatter.y [ 10; 15; 13; 17 ]
-                                               scatter.mode.markers ]
-                              traces.scatter [ scatter.x [ 2; 3; 4; 5 ]
-                                               scatter.y [ 16; 5; 11; 9 ]
-                                               scatter.mode.lines ]
-                              traces.scatter [ scatter.x [ 1; 2; 3; 4 ]
-                                               scatter.y [ 12; 9; 15; 12 ]
-                                               scatter.mode [ scatter.mode.lines
-                                                              scatter.mode.markers ] ] ] ]
+type DataPoints =
+  { dates: DateTime array
+    weights: float array
+    bodyFatPercents: float array
+    trendWeights: float array }
 
+let weightChart (dataPoints: DataPoint array) =
+  let data =
+    { dates =
+        [| DateTime(2022, 11, 7)
+           DateTime(2022, 11, 8)
+           DateTime(2022, 11, 9)
+           DateTime(2022, 11, 10)
+           DateTime(2022, 11, 11)
+           DateTime(2022, 11, 12) |]
+      weights =
+        [| 209.2
+           208.4
+           207.8
+           208.4
+           210.6
+           209.8 |]
+      bodyFatPercents = [||]
+      trendWeights =
+        [| 210.4
+           210.0
+           209.7
+           209.7
+           209.5
+           209.3 |] }
 
+  let earliest = data.dates[0]
+  let latest = data.dates[-1]
 
-
-
-
-
-
-
-
-
-// Recharts.lineChart
-// [ lineChart.data
-//     data
-//     lineChart.margin
-//     (top = 5, right = 30)
-//     lineChart.children
-//     [ Recharts.cartesianGrid [ cartesianGrid.strokeDasharray (3, 3) ]
-//       Recharts.xAxis [ xAxis.dataKey (fun data -> data.date.ToString("yyyy-MM-dd")) ]
-//       Recharts.yAxis [ yAxis.domain (domain.auto, domain.auto) ]
-//       Recharts.tooltip []
-//       Recharts.legend []
-//       Recharts.line [ line.monotone
-//                       line.dataKey (fun data -> float data.weight)
-//                       line.stroke "#8884d8" ] ] ]
+  Plotly.plot [ plot.traces [ traces.scatter [ scatter.mode.markers
+                                               scatter.name "Weight (lbs)"
+                                               scatter.x data.dates
+                                               scatter.y data.weights
+                                               scatter.line [ line.color "#17BECF" ] ]
+                              traces.scatter [ scatter.mode.lines
+                                               scatter.name "Trend"
+                                               scatter.x data.dates
+                                               scatter.y data.trendWeights
+                                               scatter.line [ line.color "#b21009"
+                                                              line.shape.spline ] ] ]
+                plot.layout [ layout.title [ title.text "Your Weight" ]
+                              layout.xaxis [ xaxis.autorange.true'
+                                             xaxis.range [ earliest; latest ]
+                                             xaxis.rangeselector [ rangeselector.buttons [ buttons.button [ button.count
+                                                                                                              1
+                                                                                                            button.label
+                                                                                                              "1m"
+                                                                                                            button.step.month
+                                                                                                            button.stepmode.backward ]
+                                                                                           buttons.button [ button.count
+                                                                                                              6
+                                                                                                            button.label
+                                                                                                              "6m"
+                                                                                                            button.step.month
+                                                                                                            button.stepmode.backward ]
+                                                                                           buttons.button [ button.step.all ] ] ]
+                                             xaxis.rangeslider [ rangeslider.range [ earliest; latest ] ]
+                                             xaxis.type'.date ]
+                              layout.yaxis [ yaxis.autorange.true'
+                                             yaxis.type'.linear ] ] ]

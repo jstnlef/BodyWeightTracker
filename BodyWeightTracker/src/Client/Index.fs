@@ -19,14 +19,23 @@ let todosApi =
 
 let init () : Model * Cmd<Msg> =
   let weights =
-    [| { date = DateTime.UtcNow.AddDays(-2)
+    [| { date = DateTime(2022, 11, 7)
+         weight = 209.2<lbs>
+         bodyFatPercent = Some 27.7 }
+       { date = DateTime(2022, 11, 8)
          weight = 208.4<lbs>
          bodyFatPercent = Some 27.6 }
-       { date = DateTime.UtcNow.AddDays(-1)
-         weight = 210.2<lbs>
+       { date = DateTime(2022, 11, 9)
+         weight = 207.8<lbs>
+         bodyFatPercent = Some 27.4 }
+       { date = DateTime(2022, 11, 10)
+         weight = 208.4<lbs>
+         bodyFatPercent = Some 27.6 }
+       { date = DateTime(2022, 11, 11)
+         weight = 210.6<lbs>
          bodyFatPercent = Some 27.9 }
-       { date = DateTime.UtcNow
-         weight = 209.2<lbs>
+       { date = DateTime(2022, 11, 12)
+         weight = 209.8<lbs>
          bodyFatPercent = Some 27.7 } |]
 
   let model =
@@ -82,10 +91,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
     Navbar.navbar
     Bulma.container [
       Bulma.columns [
-        let weight =
-          model.data
-          |> Array.tryHead
-          |> Option.defaultValue DataPoint.empty
+        let weight = model.data[model.data.Length - 1]
 
         Bulma.column [
           StatusBox.statusBox
