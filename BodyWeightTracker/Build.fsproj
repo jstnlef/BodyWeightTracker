@@ -7,13 +7,5 @@
         <Compile Include="Helpers.fs" />
         <Compile Include="Build.fs" />
     </ItemGroup>
-    <ItemGroup>
-      <PackageReference Update="FSharp.Core">
-        <Version>6.0.5</Version>
-      </PackageReference>
-      <PackageReference Update="FSharp.Control.Reactive">
-        <Version>5.0.5</Version>
-      </PackageReference>
-    </ItemGroup>
     <Import Project=".paket\Paket.Restore.targets" />
 </Project>
