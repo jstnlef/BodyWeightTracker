@@ -21,37 +21,44 @@ let bmiChart (user: User) (data: DataPoint array) =
                                                scatter.y [ 16; 16 ]
                                                scatter.fillcolor "#ebaaa3"
                                                scatter.fill.tozeroy
-                                               scatter.mode.none ]
+                                               scatter.mode.none
+                                               scatter.showlegend false ]
                               traces.scatter [ scatter.x [| earliest; latest |]
                                                scatter.y [ 18.5; 18.5 ]
                                                scatter.fillcolor "#f3eac2"
                                                scatter.fill.tonexty
-                                               scatter.mode.none ]
+                                               scatter.mode.none
+                                               scatter.showlegend false ]
                               traces.scatter [ scatter.x [| earliest; latest |]
                                                scatter.y [ 25; 25 ]
                                                scatter.fillcolor "#c1dad4"
                                                scatter.fill.tonexty
-                                               scatter.mode.none ]
+                                               scatter.mode.none
+                                               scatter.showlegend false ]
                               traces.scatter [ scatter.x [| earliest; latest |]
                                                scatter.y [ 30; 30 ]
                                                scatter.fillcolor "#f3eac2"
                                                scatter.fill.tonexty
-                                               scatter.mode.none ]
+                                               scatter.mode.none
+                                               scatter.showlegend false ]
                               traces.scatter [ scatter.x [| earliest; latest |]
                                                scatter.y [ 35; 35 ]
                                                scatter.fillcolor "#f2c5a2"
                                                scatter.fill.tonexty
-                                               scatter.mode.none ]
+                                               scatter.mode.none
+                                               scatter.showlegend false ]
                               traces.scatter [ scatter.x [| earliest; latest |]
                                                scatter.y [ 40; 40 ]
                                                scatter.fillcolor "#eeb09b"
                                                scatter.fill.tonexty
-                                               scatter.mode.none ]
+                                               scatter.mode.none
+                                               scatter.showlegend false ]
                               traces.scatter [ scatter.x [| earliest; latest |]
                                                scatter.y [ 60; 60 ]
                                                scatter.fillcolor "#ebaaa3"
                                                scatter.fill.tonexty
-                                               scatter.mode.none ]
+                                               scatter.mode.none
+                                               scatter.showlegend false ]
                               traces.scatter [ scatter.name "BMI"
                                                scatter.x dates
                                                scatter.y [ 31.0; 30.4; 30.2 ]
