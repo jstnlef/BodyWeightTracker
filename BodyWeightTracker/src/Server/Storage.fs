@@ -14,7 +14,8 @@ let connection =
   let host = Config.get "POSTGRES_HOST"
   let username = Config.get "POSTGRES_USER"
   let password = Config.get "POSTGRES_PASSWORD"
-  new NpgsqlConnection($"Host={host};Username={username};Password={password}")
+  let database = Config.get "POSTGRES_DB"
+  new NpgsqlConnection($"Host={host};Username={username};Password={password};Database={database}")
 
 module Data =
   let dataTable = table<DataPoint>
