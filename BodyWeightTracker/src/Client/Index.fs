@@ -7,7 +7,6 @@ open Shared
 
 open Feliz
 open Feliz.Bulma
-open Feliz.Recharts
 
 type Model = { data: DataPoint array; user: User }
 
@@ -21,8 +20,8 @@ let todosApi =
 let init () : Model * Cmd<Msg> =
   let weights =
     [| { date = DateTime.UtcNow.AddDays(-2)
-         weight = 210.8<lbs>
-         bodyFatPercent = Some 27.9 }
+         weight = 208.4<lbs>
+         bodyFatPercent = Some 27.6 }
        { date = DateTime.UtcNow.AddDays(-1)
          weight = 210.2<lbs>
          bodyFatPercent = Some 27.9 }
@@ -143,18 +142,10 @@ let view (model: Model) (dispatch: Msg -> unit) =
       ]
     ]
     Bulma.container [
-      Recharts.responsiveContainer [
-        responsiveContainer.width (length.percent 100)
-        responsiveContainer.height 300
-        responsiveContainer.chart (Charts.WeightChart.weightChart model.data)
-      ]
+      Charts.WeightChart.weightChart model.data
     ]
 
     Bulma.container [
-      Recharts.responsiveContainer [
-        responsiveContainer.width (length.percent 100)
-        responsiveContainer.height 300
-        responsiveContainer.chart (Charts.BmiChart.bmiChart model.user model.data)
-      ]
+      Charts.BmiChart.bmiChart model.user model.data
     ]
   ]
