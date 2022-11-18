@@ -35,8 +35,8 @@ let init () : Model * Cmd<Msg> =
          weight = 210.6<lbs>
          bodyFatPercent = Some 27.9 }
        { date = DateTime(2022, 11, 12)
-         weight = 209.8<lbs>
-         bodyFatPercent = Some 27.7 } |]
+         weight = 207.6<lbs>
+         bodyFatPercent = Some 27.4 } |]
 
   let model =
     { data = weights

@@ -18,14 +18,16 @@ let toChartWeightData (dataPoints: DataPoint array) =
          DateTime(2022, 11, 9)
          DateTime(2022, 11, 10)
          DateTime(2022, 11, 11)
-         DateTime(2022, 11, 12) |]
+         DateTime(2022, 11, 12)
+         DateTime(2022, 11, 16) |]
     weights =
       [| 209.2
          208.4
          207.8
          208.4
          210.6
-         209.8 |]
+         209.8
+         209.4 |]
     bodyFatPercents = [||]
     trendWeights =
       [| 210.4
@@ -33,7 +35,8 @@ let toChartWeightData (dataPoints: DataPoint array) =
          209.7
          209.7
          209.5
-         209.3 |] }
+         209.3
+         209.5 |] }
 
 let weightChart (dataPoints: DataPoint array) =
   let data = toChartWeightData dataPoints
