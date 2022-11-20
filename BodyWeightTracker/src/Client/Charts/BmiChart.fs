@@ -96,4 +96,9 @@ let bmiChart (user: User) (dataPoints: DataPoint list) =
                                              xaxis.rangeslider [ rangeslider.range [ earliest; latest ] ]
                                              xaxis.type'.date ]
                               layout.yaxis [ yaxis.autorange.false'
-                                             yaxis.range [ 10; 60 ] ] ] ]
+                                             yaxis.range [ 10; 60 ] ] ]
+                plot.config [ config.responsive false
+                              config.displaylogo false
+                              config.modeBarButtonsToRemove [ modeBarButtons.lasso2d
+                                                              modeBarButtons.select2d
+                                                              modeBarButtons.resetScale2d ] ] ]

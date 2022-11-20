@@ -74,4 +74,9 @@ let weightChart (dataPoints: DataPoint list) =
                                              xaxis.rangeslider [ rangeslider.range [ earliest; latest ] ]
                                              xaxis.type'.date ]
                               layout.yaxis [ yaxis.autorange.true'
-                                             yaxis.type'.linear ] ] ]
+                                             yaxis.type'.linear ] ]
+                plot.config [ config.responsive false
+                              config.displaylogo false
+                              config.modeBarButtonsToRemove [ modeBarButtons.lasso2d
+                                                              modeBarButtons.select2d
+                                                              modeBarButtons.resetScale2d ] ] ]
