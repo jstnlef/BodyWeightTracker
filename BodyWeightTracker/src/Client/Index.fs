@@ -8,67 +8,35 @@ open Shared
 open Feliz
 open Feliz.Bulma
 
-type Model = { data: DataPoint list; user: User }
+type Model = { weights: DataPoint list; user: User }
 
-type Msg = AddWeightMeasurement of DataPoint
+type Msg =
+  | GotWeights of DataPoint list
+  | AddWeightMeasurement of DataPoint
 
-let todosApi =
+let weightsApi =
   Remoting.createApi ()
   |> Remoting.withRouteBuilder Route.builder
   |> Remoting.buildProxy<IWeightsApi>
 
 let init () : Model * Cmd<Msg> =
-  let weights =
-    [ { date = DateTime(2022, 11, 8)
-        weight = 208.4<lbs>
-        bodyFatPercent = Some 27.6 }
-      { date = DateTime(2022, 11, 9)
-        weight = 207.8<lbs>
-        bodyFatPercent = Some 27.4 }
-      { date = DateTime(2022, 11, 10)
-        weight = 208.4<lbs>
-        bodyFatPercent = Some 27.6 }
-      { date = DateTime(2022, 11, 11)
-        weight = 210.6<lbs>
-        bodyFatPercent = Some 27.9 }
-      { date = DateTime(2022, 11, 12)
-        weight = 209.8<lbs>
-        bodyFatPercent = Some 27.7 }
-      { date = DateTime(2022, 11, 13)
-        weight = 209.8<lbs>
-        bodyFatPercent = Some 27.8 }
-      { date = DateTime(2022, 11, 14)
-        weight = 210.4<lbs>
-        bodyFatPercent = Some 27.9 }
-      { date = DateTime(2022, 11, 15)
-        weight = 209.4<lbs>
-        bodyFatPercent = Some 27.7 }
-      { date = DateTime(2022, 11, 16)
-        weight = 207.6<lbs>
-        bodyFatPercent = Some 27.4 }
-      { date = DateTime(2022, 11, 17)
-        weight = 208.4<lbs>
-        bodyFatPercent = Some 27.6 }
-      { date = DateTime(2022, 11, 18)
-        weight = 207.6<lbs>
-        bodyFatPercent = Some 27.4 }
-      { date = DateTime(2022, 11, 19)
-        weight = 208.4<lbs>
-        bodyFatPercent = Some 27.5 } ]
-
   let model =
-    { data = weights
+    { weights =
+        [ { date = DateTime(2022, 11, 19)
+            weight = 208.4<lbs>
+            bodyFatPercent = Some 27.5 } ]
       user =
         { sex = Male
           height = 69.0<inch>
           birthday = DateOnly(1987, 10, 3) } }
 
-  //    let cmd = Cmd.OfAsync.perform todosApi.getTodos () GotTodos
+  let cmd = Cmd.OfAsync.perform weightsApi.getWeights "" GotWeights
 
-  model, Cmd.none
+  model, cmd
 
 let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
   match msg with
+  | GotWeights weights -> { model with weights = weights }, Cmd.none
   | AddWeightMeasurement weight -> model, Cmd.none
 
 let view (model: Model) (dispatch: Msg -> unit) =
@@ -76,7 +44,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
     Navbar.navbar
     Bulma.container [
       Bulma.columns [
-        let weight = model.data[model.data.Length - 1]
+        let weight = model.weights[model.weights.Length - 1]
 
         Bulma.column [
           StatusBox.statusBox
@@ -133,10 +101,10 @@ let view (model: Model) (dispatch: Msg -> unit) =
       ]
     ]
     Bulma.container [
-      Charts.WeightChart.weightChart model.data
+      Charts.WeightChart.weightChart model.weights
     ]
 
     Bulma.container [
-      Charts.BmiChart.bmiChart model.user model.data
+      Charts.BmiChart.bmiChart model.user model.weights
     ]
   ]
