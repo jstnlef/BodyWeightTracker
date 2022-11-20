@@ -4,19 +4,25 @@ open System
 open Feliz.Plotly
 open Shared
 
-type BmiDataPoint =
-  { date: DateTime
-    bmi: float<lbs / inch^2> }
+type BmiData =
+  { dates: DateTime list
+    bmis: float list }
 
-let bmiChart (user: User) (data: DataPoint list) =
-  let earliest = DateTime.UtcNow.AddDays(-10)
-  let latest = DateTime.UtcNow.AddDays(10)
+let toBmiChartData height (dataPoints: DataPoint list) =
+  let accumulatePoint state point =
+    { state with
+        dates = state.dates @ [ point.date ]
+        bmis =
+          state.bmis
+          @ [ (float) (DataPoint.calculateBMI height point) ] }
 
-  let dates =
-    [| DateTime.UtcNow.AddDays(-3)
-       DateTime.UtcNow.AddDays(-2)
-       DateTime.UtcNow.AddDays(-1)
-       DateTime.UtcNow |]
+  ({ dates = []; bmis = [] }, dataPoints)
+  ||> List.fold accumulatePoint
+
+let bmiChart (user: User) (dataPoints: DataPoint list) =
+  let data = toBmiChartData user.height dataPoints
+  let earliest = data.dates.Head
+  let latest = DateTime.UtcNow
 
   Plotly.plot [ plot.traces [ traces.scatter [ scatter.x [| earliest; latest |]
                                                scatter.y [ 16; 16 ]
@@ -61,8 +67,8 @@ let bmiChart (user: User) (data: DataPoint list) =
                                                scatter.mode.none
                                                scatter.showlegend false ]
                               traces.scatter [ scatter.name "BMI"
-                                               scatter.x dates
-                                               scatter.y [ 31.0; 30.4; 30.2; 30.9 ]
+                                               scatter.x data.dates
+                                               scatter.y data.bmis
                                                scatter.mode [ scatter.mode.lines
                                                               scatter.mode.markers ]
                                                scatter.line [ line.color "#ee00d6" ] ] ]
