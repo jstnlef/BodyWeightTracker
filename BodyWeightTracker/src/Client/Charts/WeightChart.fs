@@ -6,42 +6,38 @@ open Feliz.Plotly
 open Shared
 
 type WeightData =
-  { dates: DateTime array
-    weights: float array
-    bodyFatPercents: float array
-    trendWeights: float array }
+  { dates: DateTime list
+    weights: float list
+    bodyFatPercents: float option list
+    trendWeights: float list }
 
-let toChartWeightData (dataPoints: DataPoint array) =
-  { dates =
-      [| DateTime(2022, 11, 7)
-         DateTime(2022, 11, 8)
-         DateTime(2022, 11, 9)
-         DateTime(2022, 11, 10)
-         DateTime(2022, 11, 11)
-         DateTime(2022, 11, 12)
-         DateTime(2022, 11, 16) |]
-    weights =
-      [| 209.2
-         208.4
-         207.8
-         208.4
-         210.6
-         209.8
-         209.4 |]
-    bodyFatPercents = [||]
-    trendWeights =
-      [| 210.4
-         210.0
-         209.7
-         209.7
-         209.5
-         209.3
-         209.5 |] }
+let calculate7DayTrend (previousWeights: float seq) =
+  let last7 (xs: float seq) = Seq.skip ((Seq.length xs) - 7) xs
+  [ previousWeights |> last7 |> Seq.average ]
 
-let weightChart (dataPoints: DataPoint array) =
+let toChartWeightData (dataPoints: DataPoint list) =
+  let accumulatePoint state point =
+    let newWeights = state.weights @ [ (float) point.weight ]
+
+    { state with
+        dates = state.dates @ [ point.date ]
+        weights = newWeights
+        bodyFatPercents = state.bodyFatPercents @ [ point.bodyFatPercent ]
+        trendWeights = state.trendWeights @ calculate7DayTrend newWeights }
+
+  ({ dates = []
+     weights = []
+     bodyFatPercents = []
+     trendWeights = [] },
+   dataPoints)
+  ||> List.fold accumulatePoint
+
+
+
+let weightChart (dataPoints: DataPoint list) =
   let data = toChartWeightData dataPoints
-  let earliest = data.dates[0]
-  let latest = data.dates[-1]
+  let earliest = data.dates.Head
+  let latest = DateTime.UtcNow
 
   Plotly.plot [ plot.traces [ traces.scatter [ scatter.mode.markers
                                                scatter.name "Weight (lbs)"
@@ -55,8 +51,7 @@ let weightChart (dataPoints: DataPoint array) =
                                                scatter.line [ line.color "#b21009"
                                                               line.shape.spline ] ] ]
                 plot.layout [ layout.title [ title.text "Your weight over time" ]
-                              layout.xaxis [ xaxis.autorange.true'
-                                             xaxis.range [ earliest; latest ]
+                              layout.xaxis [ xaxis.range [ earliest; latest ]
                                              xaxis.rangeselector [ rangeselector.buttons [ buttons.button [ button.count
                                                                                                               1
                                                                                                             button.label

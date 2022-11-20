@@ -8,7 +8,7 @@ type BmiDataPoint =
   { date: DateTime
     bmi: float<lbs / inch^2> }
 
-let bmiChart (user: User) (data: DataPoint array) =
+let bmiChart (user: User) (data: DataPoint list) =
   let earliest = DateTime.UtcNow.AddDays(-10)
   let latest = DateTime.UtcNow.AddDays(10)
 

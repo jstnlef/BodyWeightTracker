@@ -8,7 +8,7 @@ open Shared
 open Feliz
 open Feliz.Bulma
 
-type Model = { data: DataPoint array; user: User }
+type Model = { data: DataPoint list; user: User }
 
 type Msg = AddWeightMeasurement of DataPoint
 
@@ -19,24 +19,42 @@ let todosApi =
 
 let init () : Model * Cmd<Msg> =
   let weights =
-    [| { date = DateTime(2022, 11, 7)
-         weight = 209.2<lbs>
-         bodyFatPercent = Some 27.7 }
-       { date = DateTime(2022, 11, 8)
-         weight = 208.4<lbs>
-         bodyFatPercent = Some 27.6 }
-       { date = DateTime(2022, 11, 9)
-         weight = 207.8<lbs>
-         bodyFatPercent = Some 27.4 }
-       { date = DateTime(2022, 11, 10)
-         weight = 208.4<lbs>
-         bodyFatPercent = Some 27.6 }
-       { date = DateTime(2022, 11, 11)
-         weight = 210.6<lbs>
-         bodyFatPercent = Some 27.9 }
-       { date = DateTime(2022, 11, 12)
-         weight = 207.6<lbs>
-         bodyFatPercent = Some 27.4 } |]
+    [ { date = DateTime(2022, 11, 8)
+        weight = 208.4<lbs>
+        bodyFatPercent = Some 27.6 }
+      { date = DateTime(2022, 11, 9)
+        weight = 207.8<lbs>
+        bodyFatPercent = Some 27.4 }
+      { date = DateTime(2022, 11, 10)
+        weight = 208.4<lbs>
+        bodyFatPercent = Some 27.6 }
+      { date = DateTime(2022, 11, 11)
+        weight = 210.6<lbs>
+        bodyFatPercent = Some 27.9 }
+      { date = DateTime(2022, 11, 12)
+        weight = 209.8<lbs>
+        bodyFatPercent = Some 27.7 }
+      { date = DateTime(2022, 11, 13)
+        weight = 209.8<lbs>
+        bodyFatPercent = Some 27.8 }
+      { date = DateTime(2022, 11, 14)
+        weight = 210.4<lbs>
+        bodyFatPercent = Some 27.9 }
+      { date = DateTime(2022, 11, 15)
+        weight = 209.4<lbs>
+        bodyFatPercent = Some 27.7 }
+      { date = DateTime(2022, 11, 16)
+        weight = 207.6<lbs>
+        bodyFatPercent = Some 27.4 }
+      { date = DateTime(2022, 11, 17)
+        weight = 208.4<lbs>
+        bodyFatPercent = Some 27.6 }
+      { date = DateTime(2022, 11, 18)
+        weight = 207.6<lbs>
+        bodyFatPercent = Some 27.4 }
+      { date = DateTime(2022, 11, 19)
+        weight = 208.4<lbs>
+        bodyFatPercent = Some 27.5 } ]
 
   let model =
     { data = weights
@@ -52,39 +70,6 @@ let init () : Model * Cmd<Msg> =
 let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
   match msg with
   | AddWeightMeasurement weight -> model, Cmd.none
-
-//let containerBox (model: Model) (dispatch: Msg -> unit) =
-//    Bulma.box [
-//        Bulma.content [
-//            Html.ol [
-//                for todo in model.Todos do
-//                    Html.li [ prop.text todo.Description ]
-//            ]
-//        ]
-//        Bulma.field.div [
-//            field.isGrouped
-//            prop.children [
-//                Bulma.control.p [
-//                    control.isExpanded
-//                    prop.children [
-//                        Bulma.input.text [
-//                            prop.value model.Input
-//                            prop.placeholder "What needs to be done? Eh?"
-//                            prop.onChange (fun x -> SetInput x |> dispatch)
-//                        ]
-//                    ]
-//                ]
-//                Bulma.control.p [
-//                    Bulma.button.a [
-//                        color.isPrimary
-//                        prop.disabled (Todo.isValid model.Input |> not)
-//                        prop.onClick (fun _ -> dispatch AddTodo)
-//                        prop.text "Add"
-//                    ]
-//                ]
-//            ]
-//        ]
-//    ]
 
 let view (model: Model) (dispatch: Msg -> unit) =
   Bulma.container [
