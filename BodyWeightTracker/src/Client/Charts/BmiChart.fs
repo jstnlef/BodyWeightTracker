@@ -24,6 +24,9 @@ let bmiChart (user: User) (dataPoints: DataPoint list) =
   let earliest = data.dates.Head
   let latest = DateTime.UtcNow
 
+  let minBmi = data.bmis |> List.min
+  let maxBmi = data.bmis |> List.max
+
   Plotly.plot [ plot.traces [ traces.scatter [ scatter.x [| earliest; latest |]
                                                scatter.y [ 16; 16 ]
                                                scatter.fillcolor "#ebaaa3"
@@ -61,7 +64,7 @@ let bmiChart (user: User) (dataPoints: DataPoint list) =
                                                scatter.mode.none
                                                scatter.showlegend false ]
                               traces.scatter [ scatter.x [| earliest; latest |]
-                                               scatter.y [ 60; 60 ]
+                                               scatter.y [ 80; 80 ]
                                                scatter.fillcolor "#ebaaa3"
                                                scatter.fill.tonexty
                                                scatter.mode.none
@@ -96,7 +99,8 @@ let bmiChart (user: User) (dataPoints: DataPoint list) =
                                              xaxis.rangeslider [ rangeslider.range [ earliest; latest ] ]
                                              xaxis.type'.date ]
                               layout.yaxis [ yaxis.autorange.false'
-                                             yaxis.range [ 10; 60 ] ] ]
+                                             yaxis.range [ (int) (minBmi - 10.0)
+                                                           (int) (maxBmi + 10.0) ] ] ]
                 plot.config [ config.responsive false
                               config.displaylogo false
                               config.modeBarButtonsToRemove [ modeBarButtons.lasso2d
