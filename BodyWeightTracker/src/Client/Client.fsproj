@@ -8,6 +8,7 @@
     <None Include="index.html" />
     <None Include="paket.references" />
     <Compile Include="Charts/*" />
+    <Compile Include="AddWeightModal.fs" />
     <Compile Include="StatusBox.fs" />
     <Compile Include="Navbar.fs" />
     <Compile Include="Index.fs" />

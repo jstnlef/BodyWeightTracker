@@ -26,16 +26,16 @@ let navbar =
           ]
         ]
       ]
-      Bulma.navbarEnd.div [
-        Bulma.navbarItem.div [
-          Bulma.buttons [
-            Bulma.button.a [
-              Bulma.color.isPrimary
-              prop.children [ Html.strong "Sign up" ]
-            ]
-            Bulma.button.a [ prop.text "Log In" ]
-          ]
-        ]
+      // Bulma.navbarEnd.div [
+      //   Bulma.navbarItem.div [
+      //     Bulma.buttons [
+      //       Bulma.button.a [
+      //         Bulma.color.isPrimary
+      //         prop.children [ Html.strong "Sign up" ]
+      //       ]
+      //       Bulma.button.a [ prop.text "Log In" ]
+      //     ]
+      //   ]
+      // ]
       ]
-    ]
   ]

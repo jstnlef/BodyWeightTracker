@@ -6,7 +6,7 @@ open Saturn
 
 open Shared
 
-Storage.init
+// Storage.init
 
 let webApp =
   Remoting.createApi ()

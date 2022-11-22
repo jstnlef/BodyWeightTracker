@@ -42,6 +42,13 @@ let update (msg: Msg) (model: Model) : Model * Cmd<Msg> =
 let view (model: Model) (dispatch: Msg -> unit) =
   Bulma.container [
     Navbar.navbar
+    Bulma.button.button [
+      Bulma.color.isPrimary
+      prop.ariaHasPopup true
+      prop.target "add-weight-modal"
+      prop.text "Add Weight"
+    ]
+    AddWeightModal.modal
     Bulma.container [
       Bulma.columns [
         let weight = model.weights[model.weights.Length - 1]
