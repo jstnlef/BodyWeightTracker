@@ -44,6 +44,15 @@ let getWeights userId =
           bodyFatPercent = Some 27.5 }
         { date = DateTime(2022, 11, 20)
           weight = 209.2<lbs>
+          bodyFatPercent = Some 27.6 }
+        { date = DateTime(2022, 11, 21)
+          weight = 210.0<lbs>
+          bodyFatPercent = Some 27.7 }
+        { date = DateTime(2022, 11, 22)
+          weight = 208.4<lbs>
+          bodyFatPercent = Some 27.5 }
+        { date = DateTime(2022, 11, 23)
+          weight = 209.0<lbs>
           bodyFatPercent = Some 27.6 } ]
 
     return weights

@@ -48,7 +48,7 @@ let view (model: Model) (dispatch: Msg -> unit) =
       prop.target "add-weight-modal"
       prop.text "Add Weight"
     ]
-    AddWeightModal.modal
+    // AddWeightModal.modal
     Bulma.container [
       Bulma.columns [
         let weight = model.weights[model.weights.Length - 1]
