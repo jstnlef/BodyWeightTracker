@@ -25,9 +25,10 @@ module User =
     let birthday = user.birthday
     let calcYears = today.Year - birthday.Year
 
-    if today.Month < birthday.Month
-       || ((today.Month = birthday.Month)
-           && (today.Day < birthday.Day)) then
+    if
+      today.Month < birthday.Month
+      || ((today.Month = birthday.Month) && (today.Day < birthday.Day))
+    then
       calcYears - 1
     else
       calcYears
@@ -57,8 +58,7 @@ module DataPoint =
     | Female -> 1.20 * (float) bmi + 0.23 * (float) age - 5.4
 
   let bodyFatPercentOrEstimate (user: User) (data: DataPoint) =
-    data.bodyFatPercent
-    |> Option.defaultValue (estimateBodyFatFromBMI user data)
+    data.bodyFatPercent |> Option.defaultValue (estimateBodyFatFromBMI user data)
 
   let calculateLeanMass (user: User) (data: DataPoint) =
     let bodyFatPercent = bodyFatPercentOrEstimate user data
@@ -73,5 +73,5 @@ module DataPoint =
 module Route =
   let builder typeName methodName = $"/api/%s{typeName}/%s{methodName}"
 
-type IWeightsApi =
+type WeightsApi =
   { getWeights: string -> DataPoint list Async }

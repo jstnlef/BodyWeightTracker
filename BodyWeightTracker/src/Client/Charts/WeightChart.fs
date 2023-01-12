@@ -17,7 +17,7 @@ let calculate7DayTrend (previousWeights: float seq) =
 
 let toChartWeightData (dataPoints: DataPoint list) =
   let accumulatePoint state point =
-    let newWeights = state.weights @ [ (float) point.weight ]
+    let newWeights = state.weights @ [ float point.weight ]
 
     { state with
         dates = state.dates @ [ point.date ]
@@ -31,7 +31,6 @@ let toChartWeightData (dataPoints: DataPoint list) =
      trendWeights = [] },
    dataPoints)
   ||> List.fold accumulatePoint
-
 
 
 let weightChart (dataPoints: DataPoint list) =

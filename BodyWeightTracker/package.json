@@ -2,7 +2,7 @@
     "private": true,
     "engines": {
         "node": "~19",
-        "npm": "~8"
+        "npm": "~9"
     },
     "scripts": {
         "start": "webpack-dev-server --mode development",

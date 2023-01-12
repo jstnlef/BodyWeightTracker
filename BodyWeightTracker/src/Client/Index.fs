@@ -17,7 +17,7 @@ type Msg =
 let weightsApi =
   Remoting.createApi ()
   |> Remoting.withRouteBuilder Route.builder
-  |> Remoting.buildProxy<IWeightsApi>
+  |> Remoting.buildProxy<WeightsApi>
 
 let init () : Model * Cmd<Msg> =
   let model =

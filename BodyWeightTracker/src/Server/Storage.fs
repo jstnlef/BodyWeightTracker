@@ -1,13 +1,11 @@
 module Storage
 
 open Dapper.FSharp
-open Dapper.FSharp.PostgreSQL
 open Npgsql
-open System
 
 open Shared
 
-let init = Dapper.FSharp.OptionTypes.register ()
+let init = OptionTypes.register ()
 
 let connection =
   // TODO: Maybe this stuff can get replaced by asp.net's configuration classes.
